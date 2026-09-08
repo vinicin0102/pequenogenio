@@ -1,0 +1,13 @@
+# Segredos — NUNCA versionar. O repositório é público.
+.env
+.env.local
+.env.*.local
+
+# Dependências e build
+node_modules/
+dist/
+.vercel/
+
+# Sistema
+.DS_Store
+Thumbs.db

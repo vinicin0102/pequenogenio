@@ -1,0 +1,14 @@
+{
+  "name": "pequenogenio",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Landing page do Guia dos Projetos Roboticos, com checkout Pix via IronPay.",
+  "type": "module",
+  "scripts": {
+    "dev": "python -m http.server 4173",
+    "catalog": "node scripts/fetch-catalog.mjs"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
