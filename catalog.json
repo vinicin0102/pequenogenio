@@ -1,62 +1,62 @@
 {
-  "_comment": "Catalogo do funil. Os hashes sao fixos; title, price_cents e offer_hash sao preenchidos por `npm run catalog` a partir da API da IronPay. Nao editar os campos preenchidos na mao — rode o script de novo.",
+  "_comment": "Catalogo do funil. Nesta conta product_hash e offer_hash sao o mesmo valor. title e price_cents sao preenchidos por `npm run catalog` a partir da API da IronPay — nao editar na mao.",
   "_generated_at": null,
   "items": [
     {
       "role": "front",
       "product_hash": "q967b8c22h",
+      "offer_hash": "q967b8c22h",
       "title": null,
-      "price_cents": null,
-      "offer_hash": null
+      "price_cents": null
     },
     {
       "role": "bump",
       "product_hash": "rbrvctflfi",
+      "offer_hash": "rbrvctflfi",
       "title": null,
-      "price_cents": null,
-      "offer_hash": null
+      "price_cents": null
     },
     {
       "role": "bump",
       "product_hash": "lqump6turx",
+      "offer_hash": "lqump6turx",
       "title": null,
-      "price_cents": null,
-      "offer_hash": null
+      "price_cents": null
     },
     {
       "role": "bump",
       "product_hash": "rtdxir12cq",
+      "offer_hash": "rtdxir12cq",
       "title": null,
-      "price_cents": null,
-      "offer_hash": null
+      "price_cents": null
     },
     {
       "role": "bump",
       "product_hash": "otx06z9rke",
+      "offer_hash": "otx06z9rke",
       "title": null,
-      "price_cents": null,
-      "offer_hash": null
+      "price_cents": null
     },
     {
       "role": "bump",
       "product_hash": "hqbcrhob7l",
+      "offer_hash": "hqbcrhob7l",
       "title": null,
-      "price_cents": null,
-      "offer_hash": null
+      "price_cents": null
     },
     {
       "role": "bump",
       "product_hash": "1oajv4fsup",
+      "offer_hash": "1oajv4fsup",
       "title": null,
-      "price_cents": null,
-      "offer_hash": null
+      "price_cents": null
     },
     {
       "role": "bump",
       "product_hash": "p3cjz19pkh",
+      "offer_hash": "p3cjz19pkh",
       "title": null,
-      "price_cents": null,
-      "offer_hash": null
+      "price_cents": null
     }
   ]
 }

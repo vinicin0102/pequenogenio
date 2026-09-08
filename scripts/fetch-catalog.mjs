@@ -89,9 +89,15 @@ for (const item of catalogo.items) {
 
   const oferta = escolherOferta(dados);
   item.title = dados?.title ?? null;
-  item.offer_hash = oferta?.hash ?? null;
   item.price_cents = oferta?.price ?? dados?.price ?? null;
   item.tangible = dados?.product_type ? dados.product_type !== 'digital' : false;
+
+  // offer_hash nao e sobrescrito: nesta conta ele e igual ao product_hash.
+  // Se a API devolver uma oferta com hash diferente, avisa em vez de decidir
+  // sozinho — trocar o hash errado aqui cobra do produto errado.
+  const hashDaApi = oferta?.hash ?? null;
+  const divergente = hashDaApi && hashDaApi !== item.offer_hash;
+  if (divergente) item.offer_hash_api = hashDaApi;
 
   const ofertasEncontradas = Array.isArray(dados?.offers) ? dados.offers.length : 0;
   const preco = item.price_cents == null ? '?' : (item.price_cents / 100).toFixed(2);
@@ -100,7 +106,10 @@ for (const item of catalogo.items) {
       (ofertasEncontradas > 1 ? `  [${ofertasEncontradas} ofertas — conferir qual e a certa]` : '')
   );
 
-  if (!item.offer_hash) problemas.push(`${item.product_hash}: nenhuma oferta retornada — offer_hash ficou nulo`);
+  if (divergente) {
+    console.log(`      ! a API devolveu offer_hash "${hashDaApi}", diferente do product_hash`);
+    problemas.push(`${item.product_hash}: offer_hash da API ("${hashDaApi}") difere do product_hash — confirmar qual usar`);
+  }
   if (item.price_cents == null) problemas.push(`${item.product_hash}: preco nao veio na resposta`);
 }
 
