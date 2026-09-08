@@ -36,6 +36,7 @@ Depois abra <http://localhost:4173>.
 | Preço | Bloco `.offer` e o `.sticky-cta__price` |
 | Cores | Variáveis CSS em `:root` (`--red`, `--amber`, `--blue`, `--green`) |
 | Imagens dos projetos | Variáveis `base` e `itens` no primeiro `<script>` |
+| Bônus (títulos e capas) | Blocos `<article class="bonus-card">` |
 | E-mail de suporte | Rodapé |
 
 > As imagens ainda são carregadas do domínio `projetogeniobrasil.com.br`. Para hospedar a

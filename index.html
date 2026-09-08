@@ -31,6 +31,7 @@
   --blue:#009AD6;
   --green:#16A34A;
   --green-dark:#12823B;
+  --bonus-green:#4AA54F;
   --cream:#FAF3E0;
   --page:#FAFAFA;
   --card:#FFFFFF;
@@ -242,17 +243,27 @@ a{color:inherit}
 @media(min-width:720px){.guarantee__box{grid-template-columns:200px 1fr;text-align:left;padding:32px}}
 .guarantee__box img{border-radius:12px;margin-inline:auto}
 
-/* ---------- bônus ---------- */
-.bonus{display:grid;gap:14px;max-width:820px;margin:32px auto 0}
-.bonus li{
-  list-style:none;display:flex;gap:16px;align-items:center;
-  background:var(--card);border:1px solid var(--line);border-left:5px solid var(--amber);
-  border-radius:12px;padding:16px 18px;box-shadow:var(--shadow);
+/* ---------- dobra de bônus ---------- */
+.bonus{display:grid;gap:28px;max-width:940px;margin:32px auto 0}
+.bonus-card{
+  background:var(--bonus-green);color:#fff;border-radius:12px;
+  padding:28px 22px;text-align:center;box-shadow:var(--shadow-lg);
 }
-.bonus .gift{font-size:28px;flex:none}
-.bonus b{display:block;font-family:Poppins,sans-serif;font-size:13px;letter-spacing:.1em;
-  text-transform:uppercase;color:var(--amber);margin-bottom:2px}
-.bonus span{font-size:15.5px;font-weight:600;line-height:1.35}
+@media(min-width:768px){.bonus-card{padding:32px}}
+.bonus-card__gift{font-size:36px;line-height:1;margin:0 0 8px}
+.bonus-card__n{
+  font-family:Poppins,sans-serif;font-weight:700;line-height:1.15;margin:0 0 8px;
+  font-size:clamp(1.5rem,4.4vw,1.875rem);
+}
+.bonus-card__title{
+  font-family:Poppins,sans-serif;font-weight:700;line-height:1.2;margin:0;
+  font-size:clamp(1.15rem,3.4vw,1.5rem);
+}
+.bonus-card__cover{
+  width:100%;max-width:280px;margin:24px auto 0;border-radius:9px;
+  box-shadow:0 25px 50px -12px rgba(0,0,0,.45);
+}
+@media(min-width:768px){.bonus-card__cover{max-width:320px}}
 
 /* ---------- oferta ---------- */
 .offer{
@@ -499,13 +510,52 @@ a{color:inherit}
 
     <h2 class="center" style="font-size:clamp(1.3rem,3.6vw,2rem);margin-top:72px">ADQUIRINDO O GUIA HOJE, VOCÊ LEVA COMO PRESENTE:</h2>
 
-    <ul class="bonus reveal">
-      <li><span class="gift" aria-hidden="true">🎁</span><div><b>Bônus 1</b><span>Guia da Robótica para Iniciantes (Primeiros Passos)</span></div></li>
-      <li><span class="gift" aria-hidden="true">🎁</span><div><b>Bônus 2</b><span>100 Truques de Mágicas Passo a Passo</span></div></li>
-      <li><span class="gift" aria-hidden="true">🎁</span><div><b>Bônus 3</b><span>27 Mágicas com Cartas para Aprender em Casa</span></div></li>
-      <li><span class="gift" aria-hidden="true">🎁</span><div><b>Bônus 4</b><span>Piadas Infantis — Para Rir com Pais e Filhos</span></div></li>
-      <li><span class="gift" aria-hidden="true">🎁</span><div><b>Bônus 5</b><span>100 Atividades Criativas – Diversão e Aprendizado em Família</span></div></li>
-    </ul>
+    <div class="bonus reveal">
+      <article class="bonus-card">
+        <p class="bonus-card__gift" aria-hidden="true">🎁</p>
+        <p class="bonus-card__n">Bônus 1</p>
+        <h3 class="bonus-card__title">Guia da Robótica para Iniciantes (Primeiros Passos)</h3>
+        <img class="bonus-card__cover" loading="lazy" decoding="async" width="800" height="1200"
+          src="https://projetogeniobrasil.com.br/robotica/assets/bonus1-cover-BKbk0fYm.webp"
+          alt="Capa do Bônus 1: Guia da Robótica para Iniciantes (Primeiros Passos)">
+      </article>
+
+      <article class="bonus-card">
+        <p class="bonus-card__gift" aria-hidden="true">🎁</p>
+        <p class="bonus-card__n">Bônus 2</p>
+        <h3 class="bonus-card__title">100 Truques de Mágicas Passo a Passo</h3>
+        <img class="bonus-card__cover" loading="lazy" decoding="async" width="1024" height="1536"
+          src="https://projetogeniobrasil.com.br/robotica/assets/C%C3%B3pia_de_C%C3%B3pia_de_C%C3%B3pia_de_Sem_nome_(1)_1767588095961-DYmSd7iC.png"
+          alt="Capa do Bônus 2: 100 Truques de Mágicas Passo a Passo">
+      </article>
+
+      <article class="bonus-card">
+        <p class="bonus-card__gift" aria-hidden="true">🎁</p>
+        <p class="bonus-card__n">Bônus 3</p>
+        <h3 class="bonus-card__title">27 Mágicas com Cartas para Aprender em Casa</h3>
+        <img class="bonus-card__cover" loading="lazy" decoding="async" width="1024" height="1536"
+          src="https://projetogeniobrasil.com.br/robotica/assets/C%C3%B3pia_de_C%C3%B3pia_de_C%C3%B3pia_de_C%C3%B3pia_de_Sem_nome_1767588314352-BYXA_GeW.png"
+          alt="Capa do Bônus 3: 27 Mágicas com Cartas para Aprender em Casa">
+      </article>
+
+      <article class="bonus-card">
+        <p class="bonus-card__gift" aria-hidden="true">🎁</p>
+        <p class="bonus-card__n">Bônus 4</p>
+        <h3 class="bonus-card__title">Piadas Infantis — Para Rir com Pais e Filhos</h3>
+        <img class="bonus-card__cover" loading="lazy" decoding="async" width="1024" height="1536"
+          src="https://projetogeniobrasil.com.br/robotica/assets/C%C3%B3pia_de_C%C3%B3pia_de_C%C3%B3pia_de_C%C3%B3pia_de_C%C3%B3pia_de_Sem_nome_1767588710681-DW_7l6TW.png"
+          alt="Capa do Bônus 4: Piadas Infantis para rir com pais e filhos">
+      </article>
+
+      <article class="bonus-card">
+        <p class="bonus-card__gift" aria-hidden="true">🎁</p>
+        <p class="bonus-card__n">Bônus 5</p>
+        <h3 class="bonus-card__title">100 Atividades Criativas – Diversão e Aprendizado em Família</h3>
+        <img class="bonus-card__cover" loading="lazy" decoding="async" width="1024" height="1536"
+          src="https://projetogeniobrasil.com.br/robotica/assets/C%C3%B3pia_de_C%C3%B3pia_de_C%C3%B3pia_de_C%C3%B3pia_de_C%C3%B3pia_de_C%C3%B3pia_de_C%C3%B3pia_de_1768444927138-DVmjcVuF.png"
+          alt="Capa do Bônus 5: 100 Atividades Criativas para diversão e aprendizado em família">
+      </article>
+    </div>
 
     <div class="offer reveal" style="margin-top:64px">
       <span class="offer__label">OFERTA ESPECIAL DE LANÇAMENTO</span>
