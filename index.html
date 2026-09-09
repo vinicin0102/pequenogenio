@@ -20,6 +20,23 @@
 <link rel="preconnect" href="https://projetogeniobrasil.com.br">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800;900&display=swap" rel="stylesheet">
 
+<!-- Meta Pixel -->
+<script>
+  !function(f,b,e,v,n,t,s)
+  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+  n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];
+  s.parentNode.insertBefore(t,s)}(window,document,'script',
+  'https://connect.facebook.net/en_US/fbevents.js');
+
+  fbq('init', '624262646647561');
+  fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+  src="https://www.facebook.com/tr?id=624262646647561&ev=PageView&noscript=1" alt=""></noscript>
+
 <style>
 :root{
   --ink:#181825;
@@ -979,6 +996,34 @@ var TRACKING = (function(){
   });
 })();
 
+/* ================= RASTREAMENTO (Meta Pixel) =================
+   Nao vai dado pessoal para a Meta: nada de nome, e-mail, CPF ou telefone.
+   So o evento, o valor e os ids dos produtos.
+   Cada disparo leva um eventID, para deduplicar caso a Conversions API
+   (server-side) seja ligada depois no webhook. */
+var PixelEventos = (function(){
+  var jaDisparados = {};
+
+  function novoId(nome){
+    return nome + '-' + Date.now() + '-' + Math.random().toString(36).slice(2,10);
+  }
+
+  /** `umaVezPor` evita repetir o mesmo evento (ex.: abrir o checkout 3x). */
+  function rastrear(evento, dados, opcoes){
+    opcoes = opcoes || {};
+    if (opcoes.umaVezPor) {
+      if (jaDisparados[opcoes.umaVezPor]) return;
+      jaDisparados[opcoes.umaVezPor] = true;
+    }
+    if (typeof fbq !== 'function') return; // bloqueador de anuncios
+    try {
+      fbq(opcoes.customizado ? 'trackCustom' : 'track', evento, dados || {}, { eventID: novoId(evento) });
+    } catch (e) { /* pixel nunca pode derrubar o checkout */ }
+  }
+
+  return { rastrear: rastrear };
+})();
+
 /* ================= TOAST DE VENDAS =================
    Notificacoes de compra geradas no navegador, a partir das listas abaixo.
    Nao refletem vendas reais: para ligar em vendas de verdade, troque
@@ -1077,6 +1122,33 @@ var TRACKING = (function(){
     return 'R$ ' + (centavos/100).toFixed(2).replace('.', ',');
   }
 
+  /** Parametros de valor do pedido, no formato que o pixel espera. */
+  function paramsDoPedido(){
+    if (!front) return null;
+    var extras = marcados();
+    var total = front.amount + extras.reduce(function(s, id){
+      var b = bumps.find(function(x){ return x.id === id; });
+      return s + (b ? b.amount : 0);
+    }, 0);
+
+    return {
+      value: Number((total/100).toFixed(2)),
+      currency: 'BRL',
+      content_type: 'product',
+      content_ids: ['guia'].concat(extras),
+      contents: [{ id: 'guia', quantity: 1 }].concat(extras.map(function(id){
+        return { id: id, quantity: 1 };
+      })),
+      num_items: 1 + extras.length
+    };
+  }
+
+  /* Só faz sentido depois que as ofertas chegam — antes disso o valor seria 0. */
+  function dispararInitiateCheckout(){
+    var p = paramsDoPedido();
+    if (p) PixelEventos.rastrear('InitiateCheckout', p);
+  }
+
   function mostrarEtapa(nome){
     Object.keys(etapas).forEach(function(k){ etapas[k].hidden = (k !== nome); });
     caixa.scrollTop = 0;
@@ -1090,6 +1162,7 @@ var TRACKING = (function(){
     document.body.classList.add('modal-aberto');
     mostrarEtapa('form');
     carregarOfertas();
+    if (carregado) dispararInitiateCheckout(); // já tinha carregado: dispara agora
     // Numero sorteado a cada abertura, para nao ficar congelado na tela.
     document.getElementById('espectadores').textContent = Math.floor(Math.random()*43) + 47;
     setTimeout(function(){ document.getElementById('cf-nome').focus(); }, 60);
@@ -1124,6 +1197,7 @@ var TRACKING = (function(){
         document.getElementById('checkout-produto').textContent = front.titulo;
         renderBumps();
         recalcular();
+        dispararInitiateCheckout(); // primeira abertura: só agora há valor
       })
       .catch(function(){
         // Sem /api/ofertas o modal não sabe o preço — melhor mandar para a
@@ -1159,6 +1233,18 @@ var TRACKING = (function(){
       if (e.target.type !== 'checkbox') return;
       e.target.closest('.bump').classList.toggle('bump--marcado', e.target.checked);
       recalcular();
+
+      // Só o bump marcado, não o pedido inteiro — desmarcar não dispara nada.
+      if (e.target.checked) {
+        var b = bumps.find(function(x){ return x.id === e.target.value; });
+        if (b) PixelEventos.rastrear('AddToCart', {
+          value: Number((b.amount/100).toFixed(2)),
+          currency: 'BRL',
+          content_type: 'product',
+          content_ids: [b.id],
+          contents: [{ id: b.id, quantity: 1 }]
+        });
+      }
     });
 
     wrap.hidden = false;
@@ -1298,8 +1384,21 @@ var TRACKING = (function(){
   });
 
   /* --- etapa do QR --- */
+  var ultimoPedido = null; // guardado para o evento Purchase, quando o Pix cair
+
   function mostrarPix(d){
     document.getElementById('pix-codigo').value = d.copiaECola;
+
+    // Valor vindo do SERVIDOR (d.valor), nao do total exibido: e ele que foi
+    // efetivamente cobrado.
+    ultimoPedido = {
+      value: Number((d.valor/100).toFixed(2)),
+      currency: 'BRL',
+      content_type: 'product',
+      content_ids: ['guia'].concat(marcados()),
+      num_items: (d.itens || []).length || 1
+    };
+    PixelEventos.rastrear('AddPaymentInfo', ultimoPedido);
 
     var resumo = (d.itens || []).map(function(i){
       return '<li><span>' + i.titulo + '</span><span>' + reais(i.amount) + '</span></li>';
@@ -1360,7 +1459,15 @@ var TRACKING = (function(){
         .then(function(r){ return r.ok ? r.json() : null; })
         .then(function(s){
           if (!s) return;
-          if (s.pago) { pararPolling(); mostrarEtapa('ok'); }
+          if (s.pago) {
+            pararPolling();
+            // umaVezPor: o polling pode ver "paid" mais de uma vez antes de parar,
+            // e Purchase duplicado estraga o ROAS da campanha.
+            if (ultimoPedido) {
+              PixelEventos.rastrear('Purchase', ultimoPedido, { umaVezPor: 'purchase-' + hash });
+            }
+            mostrarEtapa('ok');
+          }
           else if (s.finalizado) {
             pararPolling();
             document.getElementById('pix-status').textContent = 'Cobrança cancelada ou expirada.';

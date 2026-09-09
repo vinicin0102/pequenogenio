@@ -67,6 +67,23 @@ postback é reenviado.
 > `api/webhook.js` tem a entrega como `TODO`. Ligar o e-mail ou a área de membros ali
 > antes de vender, senão o cliente paga e não recebe nada.
 
+### Meta Pixel
+
+Pixel `624262646647561`. Eventos disparados no navegador:
+
+| Evento | Quando | Valor |
+| --- | --- | --- |
+| `PageView` | Carregamento da página | — |
+| `InitiateCheckout` | Modal abre (após as ofertas carregarem) | Total atual |
+| `AddToCart` | Order bump **marcado** | Só o bump |
+| `AddPaymentInfo` | Pix gerado | Total cobrado pelo servidor |
+| `Purchase` | Polling confirma o pagamento | Total cobrado |
+
+Nenhum dado pessoal vai para a Meta — nome, e-mail, CPF e telefone ficam de fora.
+Cada disparo leva um `eventID`, para deduplicar caso a Conversions API (server-side)
+seja ligada depois no `api/webhook.js`. `Purchase` é travado por hash da transação:
+o polling pode ver `paid` mais de uma vez, e evento duplicado estraga o ROAS.
+
 ### Detalhes da API que custam caro esquecer
 
 - Valores em **centavos** — R$ 10,00 é `1000`
