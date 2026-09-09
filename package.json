@@ -4,7 +4,7 @@
   "private": true,
   "description": "Landing page do Guia dos Projetos Roboticos, com checkout Pix via IronPay.",
   "scripts": {
-    "dev": "python -m http.server 4173",
+    "dev": "node scripts/dev-server.mjs",
     "catalog": "node scripts/fetch-catalog.mjs",
     "test": "node scripts/teste-pedido.mjs"
   },

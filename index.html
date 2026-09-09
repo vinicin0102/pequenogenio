@@ -57,6 +57,9 @@ body{
 img{max-width:100%;height:auto;display:block}
 figure{margin:0}
 ul,ol{padding:0;margin:0}
+/* Precisa vir depois das regras de display acima, senao um `display:block`
+   mais especifico faz o elemento escondido reaparecer. */
+[hidden]{display:none!important}
 h1,h2,h3,.font-display{font-family:Poppins,Inter,system-ui,sans-serif;line-height:1.12;letter-spacing:-.02em;margin:0}
 p{margin:0 0 1rem}
 a{color:inherit}
@@ -316,6 +319,124 @@ a{color:inherit}
   padding:12px 18px;z-index:100;border-radius:0 0 8px 0;font-weight:700;
 }
 .skip-link:focus{left:0}
+
+/* ================= CHECKOUT PIX (modal) ================= */
+.modal{
+  position:fixed;inset:0;z-index:1000;display:none;
+  align-items:center;justify-content:center;padding:16px;
+  background:rgba(24,24,37,.65);backdrop-filter:blur(3px);
+}
+.modal.is-open{display:flex}
+body.modal-aberto{overflow:hidden}
+.modal__caixa{
+  background:#fff;width:100%;max-width:460px;border-radius:22px;
+  box-shadow:0 24px 60px rgba(0,0,0,.3);max-height:92vh;overflow-y:auto;position:relative;
+}
+.modal__fechar{
+  position:absolute;top:12px;right:12px;z-index:2;
+  width:38px;height:38px;border-radius:50%;border:0;cursor:pointer;
+  background:#f1f1f4;color:var(--ink);font-size:20px;line-height:1;font-weight:700;
+}
+.modal__fechar:hover{background:#e4e4ea}
+.etapa{padding:28px 24px}
+.etapa[hidden]{display:none}
+.etapa__chapeu{
+  font-size:11px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--red);margin:0 0 6px;
+}
+.etapa__titulo{font-size:1.4rem;font-weight:800;margin:0 0 4px;line-height:1.2}
+.etapa__produto{font-size:13.5px;color:var(--muted);margin:0 0 18px;line-height:1.35}
+
+.campo{margin-bottom:14px}
+.campo label{
+  display:block;font-size:11px;font-weight:800;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--ink);margin-bottom:6px;
+}
+.campo input{
+  width:100%;border:1px solid var(--line);border-radius:12px;
+  padding:13px 14px;font-size:16px; /* 16px evita o zoom automatico no iOS */
+  font-family:inherit;color:var(--ink);background:#fff;
+}
+.campo input:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(0,154,214,.18)}
+.campo input[aria-invalid="true"]{border-color:var(--red);box-shadow:0 0 0 3px rgba(232,50,44,.15)}
+.campo .dica{font-size:11.5px;color:var(--muted);margin:5px 0 0}
+.campo-duplo{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+
+.bumps{margin:20px 0 4px}
+.bumps__titulo{
+  font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--muted);margin:0 0 8px;
+}
+.bump{
+  display:flex;gap:10px;align-items:flex-start;cursor:pointer;
+  border:2px dashed var(--line);border-radius:12px;padding:12px;margin-bottom:8px;
+  background:#fcfcfd;transition:border-color .15s ease,background .15s ease;
+}
+.bump:hover{border-color:var(--amber)}
+.bump--marcado{border-style:solid;border-color:var(--green);background:rgba(22,163,74,.06)}
+.bump input{width:20px;height:20px;flex:none;margin:2px 0 0;accent-color:var(--green)}
+.bump__nome{font-size:13.5px;font-weight:700;line-height:1.3;display:block}
+.bump__desc{font-size:12px;color:var(--muted);line-height:1.35;margin:3px 0 0}
+.bump__preco{font-size:13px;font-weight:800;color:var(--green);margin:4px 0 0}
+.bump__preco s{color:var(--muted);font-weight:600;margin-right:5px}
+
+.total{
+  border-top:1px dashed var(--line);margin-top:16px;padding-top:14px;
+  display:flex;align-items:baseline;justify-content:space-between;
+}
+.total span:first-child{font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.total__valor{font-family:Poppins,sans-serif;font-size:1.75rem;font-weight:900;color:var(--green)}
+
+.alerta{
+  background:rgba(232,50,44,.07);border:1px solid rgba(232,50,44,.3);color:var(--red-dark);
+  font-size:13px;font-weight:600;border-radius:12px;padding:12px;margin-top:14px;
+}
+.alerta ul{margin:6px 0 0;padding-left:18px}
+.alerta li{margin-top:2px}
+
+.btn--full{display:flex;width:100%;margin-top:16px;padding:17px 20px;font-size:1rem}
+.btn[disabled]{opacity:.6;cursor:not-allowed;transform:none}
+.rodape-form{font-size:11.5px;color:var(--muted);text-align:center;margin:10px 0 0}
+
+/* --- etapa do QR --- */
+.pix{text-align:center}
+.pix__qr{
+  border:2px solid var(--line);border-radius:16px;padding:12px;
+  display:inline-block;margin-bottom:14px;background:#fff;
+}
+.pix__qr canvas,.pix__qr img{display:block;width:216px;height:216px}
+.pix__rotulo{font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:0 0 8px}
+.pix__copia{display:flex;gap:8px;margin-bottom:14px}
+.pix__copia input{
+  flex:1;min-width:0;border:1px solid var(--line);background:#f7f7f9;border-radius:12px;
+  padding:12px;font-size:12px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+  color:var(--ink-soft);text-overflow:ellipsis;
+}
+.pix__copia button{
+  background:var(--ink);color:#fff;border:0;border-radius:12px;padding:0 18px;cursor:pointer;
+  font-family:Poppins,sans-serif;font-weight:800;font-size:12px;letter-spacing:.1em;text-transform:uppercase;
+}
+.pix__copia button:hover{background:#2a2a40}
+.pix__status{
+  background:rgba(0,154,214,.08);border:1px solid rgba(0,154,214,.25);border-radius:12px;
+  padding:12px;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:8px;
+}
+.pix__bolinha{width:9px;height:9px;border-radius:50%;background:var(--blue);animation:pulsa 1.4s ease-in-out infinite}
+@keyframes pulsa{0%,100%{opacity:1}50%{opacity:.25}}
+.pix__aviso{font-size:11.5px;color:var(--muted);margin:12px 0 0}
+.pix__resumo{
+  text-align:left;background:#f8f8fa;border-radius:12px;padding:12px 14px;margin-bottom:16px;
+  font-size:12.5px;color:var(--ink-soft);
+}
+.pix__resumo li{display:flex;justify-content:space-between;gap:12px;padding:3px 0;list-style:none}
+.pix__resumo li:last-child{border-top:1px solid var(--line);margin-top:5px;padding-top:7px;font-weight:800;color:var(--ink)}
+
+/* --- etapa de sucesso --- */
+.ok__selo{
+  width:62px;height:62px;border-radius:50%;background:rgba(22,163,74,.12);
+  display:flex;align-items:center;justify-content:center;margin:0 auto 16px;
+  font-size:32px;color:var(--green);
+}
 </style>
 </head>
 <body>
@@ -349,7 +470,7 @@ a{color:inherit}
     </p>
 
     <p style="margin-top:32px">
-      <a class="btn btn--red js-checkout" href="https://checkout.projetogeniobrasil.com.br/VCCL1O8SCOGT">
+      <a class="btn btn--red js-checkout" href="https://go.ironpayapp.com.br/9y9azrh8w7">
         QUERO ACESSAR AGORA
       </a>
     </p>
@@ -422,7 +543,7 @@ a{color:inherit}
     </ul>
 
     <p style="margin-top:40px">
-      <a class="btn btn--green btn--block js-checkout" href="https://checkout.projetogeniobrasil.com.br/VCCL1O8SCOGT">
+      <a class="btn btn--green btn--block js-checkout" href="https://go.ironpayapp.com.br/9y9azrh8w7">
         QUERO COMEÇAR AGORA POR APENAS R$ 10
       </a>
     </p>
@@ -470,7 +591,7 @@ a{color:inherit}
     </div>
 
     <p style="margin-top:36px">
-      <a class="btn btn--red btn--block js-checkout" href="https://checkout.projetogeniobrasil.com.br/VCCL1O8SCOGT">
+      <a class="btn btn--red btn--block js-checkout" href="https://go.ironpayapp.com.br/9y9azrh8w7">
         ADQUIRIR ACESSO AO GUIA
       </a>
     </p>
@@ -562,7 +683,7 @@ a{color:inherit}
       <p class="offer__old">De <s>R$ 99,00</s> por apenas</p>
       <p class="offer__price">R$&nbsp;10,00</p>
       <p class="offer__save">Você economiza <b>R$ 89,00</b> — cerca de <b>90% de desconto</b> para garantir o guia completo.</p>
-      <a class="btn btn--green btn--block js-checkout" href="https://checkout.projetogeniobrasil.com.br/VCCL1O8SCOGT">
+      <a class="btn btn--green btn--block js-checkout" href="https://go.ironpayapp.com.br/9y9azrh8w7">
         QUERO ACESSAR O GUIA POR APENAS R$ 10
         <span class="btn__sub"></span>
       </a>
@@ -587,11 +708,109 @@ a{color:inherit}
   </div>
 </footer>
 
+<!-- ================= CHECKOUT PIX ================= -->
+<div class="modal" id="checkout" role="dialog" aria-modal="true" aria-labelledby="checkout-titulo">
+  <div class="modal__caixa">
+    <button type="button" class="modal__fechar" id="checkout-fechar" aria-label="Fechar checkout">&times;</button>
+
+    <!-- ETAPA 1 — dados do comprador -->
+    <section class="etapa" id="etapa-form">
+      <p class="etapa__chapeu">Pagamento via Pix</p>
+      <h2 class="etapa__titulo" id="checkout-titulo">Finalize seu acesso</h2>
+      <p class="etapa__produto" id="checkout-produto">Guia dos Projetos Robóticos</p>
+
+      <form id="form-checkout" novalidate>
+        <div class="campo">
+          <label for="cf-nome">Nome completo</label>
+          <input id="cf-nome" name="nome" type="text" autocomplete="name" required>
+        </div>
+        <div class="campo">
+          <label for="cf-email">E-mail</label>
+          <input id="cf-email" name="email" type="email" autocomplete="email" inputmode="email" required>
+          <p class="dica">É para este e-mail que enviamos o acesso.</p>
+        </div>
+        <div class="campo-duplo">
+          <div class="campo">
+            <label for="cf-cpf">CPF</label>
+            <input id="cf-cpf" name="cpf" type="text" inputmode="numeric" maxlength="14" autocomplete="off" required>
+          </div>
+          <div class="campo">
+            <label for="cf-tel">Celular</label>
+            <input id="cf-tel" name="telefone" type="tel" inputmode="numeric" maxlength="15" autocomplete="tel" required>
+          </div>
+        </div>
+
+        <div class="bumps" id="bumps-wrap" hidden>
+          <p class="bumps__titulo">🎁 Adicione ao seu pedido</p>
+          <div id="bumps-lista"></div>
+        </div>
+
+        <div class="total">
+          <span>Total</span>
+          <span class="total__valor" id="checkout-total">R$ 9,90</span>
+        </div>
+
+        <div class="alerta" id="checkout-erros" role="alert" hidden></div>
+
+        <button type="submit" class="btn btn--green btn--full" id="btn-gerar">
+          <span id="btn-gerar-texto">GERAR CÓDIGO PIX</span>
+        </button>
+        <p class="rodape-form">Seus dados são usados apenas para emitir a cobrança.</p>
+      </form>
+    </section>
+
+    <!-- ETAPA 2 — QR Code -->
+    <section class="etapa pix" id="etapa-pix" hidden>
+      <p class="etapa__chapeu">Escaneie para pagar</p>
+      <h2 class="etapa__titulo" style="margin-bottom:16px">Seu Pix está pronto</h2>
+
+      <ul class="pix__resumo" id="pix-resumo"></ul>
+
+      <div class="pix__qr">
+        <canvas id="pix-qr" width="216" height="216"></canvas>
+        <img id="pix-qr-img" alt="QR Code do Pix" hidden>
+      </div>
+
+      <p class="pix__rotulo">Ou use o copia e cola</p>
+      <div class="pix__copia">
+        <input id="pix-codigo" type="text" readonly aria-label="Código Pix copia e cola">
+        <button type="button" id="btn-copiar">Copiar</button>
+      </div>
+
+      <p class="pix__status">
+        <span class="pix__bolinha" aria-hidden="true"></span>
+        <span id="pix-status">Aguardando pagamento…</span>
+      </p>
+      <p class="pix__aviso">A liberação é automática assim que o Pix cair. Pode deixar esta tela aberta.</p>
+    </section>
+
+    <!-- ETAPA 3 — pago -->
+    <section class="etapa" id="etapa-ok" hidden style="text-align:center">
+      <div class="ok__selo" aria-hidden="true">✓</div>
+      <p class="etapa__chapeu" style="color:var(--green)">Pagamento aprovado</p>
+      <h2 class="etapa__titulo">Tudo certo!</h2>
+      <p style="color:var(--ink-soft);font-size:14.5px;margin-top:10px">
+        Enviamos o acesso para o seu e-mail e WhatsApp. Se não aparecer em alguns minutos,
+        confira a caixa de spam ou fale com o suporte.
+      </p>
+      <p style="margin-top:18px">
+        <a href="mailto:sacpequenogenio.sac@gmail.com" style="color:var(--red);font-weight:700">
+          sacpequenogenio.sac@gmail.com
+        </a>
+      </p>
+    </section>
+  </div>
+</div>
+
 <!-- ================= CTA FIXO (MOBILE) ================= -->
 <div class="sticky-cta" id="stickyCta">
   <div class="sticky-cta__price">R$ 10,00<small><s>R$ 99,00</s></small></div>
-  <a class="btn btn--green js-checkout" href="https://checkout.projetogeniobrasil.com.br/VCCL1O8SCOGT">QUERO ACESSAR</a>
+  <a class="btn btn--green js-checkout" href="https://go.ironpayapp.com.br/9y9azrh8w7">QUERO ACESSAR</a>
 </div>
+
+<!-- Gera o QR Code do Pix no cliente, a partir do copia e cola. Se nao carregar,
+     o checkout continua funcionando pelo copia e cola. -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js" defer></script>
 
 <script>
 document.documentElement.classList.add('js');
@@ -630,9 +849,21 @@ document.documentElement.classList.add('js');
   if(t) t.innerHTML+=t.innerHTML;
 })();
 
-/* ---------- MELHORIA: repassa os parâmetros de campanha ao checkout ----------
-   A página original tinha src/utm_source/utm_term fixos no link. Aqui os
-   parâmetros reais da visita são propagados, então o rastreamento não quebra. */
+/* ---------- Parâmetros de campanha ----------
+   Vão junto na criação da cobrança (campo `tracking`) e também nos links de
+   fallback, para o rastreamento não se perder se o modal não abrir. */
+var TRACKING = (function(){
+  var p = new URLSearchParams(window.location.search);
+  return {
+    src: p.get('src') || '',
+    utm_source: p.get('utm_source') || '',
+    utm_medium: p.get('utm_medium') || '',
+    utm_campaign: p.get('utm_campaign') || '',
+    utm_term: p.get('utm_term') || '',
+    utm_content: p.get('utm_content') || ''
+  };
+})();
+
 (function(){
   var q=window.location.search;
   if(!q||q.length<2) return;
@@ -642,6 +873,324 @@ document.documentElement.classList.add('js');
     p.forEach(function(v,k){ if(!u.searchParams.has(k)) u.searchParams.set(k,v); });
     a.href=u.toString();
   });
+})();
+
+/* ================= CHECKOUT PIX =================
+   Os CTAs continuam sendo <a> apontando para a oferta na IronPay. Aqui o
+   clique é interceptado para abrir o modal; se este script falhar, o link
+   ainda leva a um checkout que funciona. */
+(function(){
+  var modal   = document.getElementById('checkout');
+  var caixa   = modal.querySelector('.modal__caixa');
+  var form    = document.getElementById('form-checkout');
+  var elTotal = document.getElementById('checkout-total');
+  var elErros = document.getElementById('checkout-erros');
+  var btn     = document.getElementById('btn-gerar');
+  var btnTxt  = document.getElementById('btn-gerar-texto');
+
+  var etapas = {
+    form: document.getElementById('etapa-form'),
+    pix:  document.getElementById('etapa-pix'),
+    ok:   document.getElementById('etapa-ok')
+  };
+
+  var front = null;      // { titulo, amount }
+  var bumps = [];        // [{ id, titulo, descricao, amount, amountDe }]
+  var polling = null;    // id do setInterval do status
+  var ultimoFoco = null; // para devolver o foco ao fechar
+
+  function reais(centavos){
+    return 'R$ ' + (centavos/100).toFixed(2).replace('.', ',');
+  }
+
+  function mostrarEtapa(nome){
+    Object.keys(etapas).forEach(function(k){ etapas[k].hidden = (k !== nome); });
+    caixa.scrollTop = 0;
+  }
+
+  /* --- abrir / fechar --- */
+  function abrir(e){
+    if (e) e.preventDefault();
+    ultimoFoco = document.activeElement;
+    modal.classList.add('is-open');
+    document.body.classList.add('modal-aberto');
+    mostrarEtapa('form');
+    carregarOfertas();
+    setTimeout(function(){ document.getElementById('cf-nome').focus(); }, 60);
+  }
+
+  function fechar(){
+    modal.classList.remove('is-open');
+    document.body.classList.remove('modal-aberto');
+    pararPolling();
+    if (ultimoFoco && ultimoFoco.focus) ultimoFoco.focus();
+  }
+
+  document.querySelectorAll('a.js-checkout').forEach(function(a){
+    a.addEventListener('click', abrir);
+  });
+  document.getElementById('checkout-fechar').addEventListener('click', fechar);
+  modal.addEventListener('click', function(e){ if (e.target === modal) fechar(); });
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape' && modal.classList.contains('is-open')) fechar();
+  });
+
+  /* --- ofertas --- */
+  var carregado = false;
+  function carregarOfertas(){
+    if (carregado) return;
+    fetch('/api/ofertas')
+      .then(function(r){ if(!r.ok) throw new Error('ofertas'); return r.json(); })
+      .then(function(d){
+        carregado = true;
+        front = d.front;
+        bumps = d.bumps || [];
+        document.getElementById('checkout-produto').textContent = front.titulo;
+        renderBumps();
+        recalcular();
+      })
+      .catch(function(){
+        // Sem /api/ofertas o modal não sabe o preço — melhor mandar para a
+        // oferta da IronPay do que exibir um total inventado.
+        window.location.href = 'https://go.ironpayapp.com.br/9y9azrh8w7';
+      });
+  }
+
+  function renderBumps(){
+    if (!bumps.length) return;
+    var wrap  = document.getElementById('bumps-wrap');
+    var lista = document.getElementById('bumps-lista');
+
+    lista.innerHTML = bumps.map(function(b){
+      var de = b.amountDe ? '<s>' + reais(b.amountDe) + '</s>' : '';
+      return '<label class="bump" data-id="' + b.id + '">' +
+        '<input type="checkbox" value="' + b.id + '">' +
+        '<span>' +
+          '<span class="bump__nome">' + b.titulo + '</span>' +
+          (b.descricao ? '<span class="bump__desc">' + b.descricao + '</span>' : '') +
+          '<span class="bump__preco">' + de + reais(b.amount) + '</span>' +
+        '</span>' +
+      '</label>';
+    }).join('');
+
+    lista.addEventListener('change', function(e){
+      if (e.target.type !== 'checkbox') return;
+      e.target.closest('.bump').classList.toggle('bump--marcado', e.target.checked);
+      recalcular();
+    });
+
+    wrap.hidden = false;
+  }
+
+  function marcados(){
+    return [].slice.call(document.querySelectorAll('#bumps-lista input:checked'))
+             .map(function(c){ return c.value; });
+  }
+
+  /* O total aqui é só para o comprador ver. Quem soma de verdade é o servidor. */
+  function recalcular(){
+    if (!front) return;
+    var total = front.amount + marcados().reduce(function(s, id){
+      var b = bumps.find(function(x){ return x.id === id; });
+      return s + (b ? b.amount : 0);
+    }, 0);
+    elTotal.textContent = reais(total);
+  }
+
+  /* --- máscaras --- */
+  function mascara(el, fn){
+    el.addEventListener('input', function(){
+      var pos = el.value.length - el.selectionStart;
+      el.value = fn(el.value);
+      el.selectionStart = el.selectionEnd = Math.max(0, el.value.length - pos);
+      el.setAttribute('aria-invalid', 'false');
+    });
+  }
+  mascara(document.getElementById('cf-cpf'), function(v){
+    v = v.replace(/\D/g,'').slice(0,11);
+    return v.replace(/(\d{3})(\d)/,'$1.$2').replace(/(\d{3})(\d)/,'$1.$2').replace(/(\d{3})(\d{1,2})$/,'$1-$2');
+  });
+  mascara(document.getElementById('cf-tel'), function(v){
+    v = v.replace(/\D/g,'').slice(0,11);
+    if (v.length <= 10) return v.replace(/(\d{2})(\d)/,'($1) $2').replace(/(\d{4})(\d)/,'$1-$2');
+    return v.replace(/(\d{2})(\d)/,'($1) $2').replace(/(\d{5})(\d)/,'$1-$2');
+  });
+
+  /* --- validação no cliente (o servidor valida de novo) --- */
+  function digitos(s){ return String(s||'').replace(/\D/g,''); }
+
+  function cpfValido(cpf){
+    var c = digitos(cpf);
+    if (c.length !== 11 || /^(\d)\1{10}$/.test(c)) return false;
+    var soma = 0, i;
+    for (i = 0; i < 9; i++) soma += +c[i] * (10 - i);
+    var d1 = (soma * 10) % 11; if (d1 === 10) d1 = 0;
+    if (d1 !== +c[9]) return false;
+    soma = 0;
+    for (i = 0; i < 10; i++) soma += +c[i] * (11 - i);
+    var d2 = (soma * 10) % 11; if (d2 === 10) d2 = 0;
+    return d2 === +c[10];
+  }
+
+  function validar(){
+    var erros = [];
+    var campos = {
+      nome:  document.getElementById('cf-nome'),
+      email: document.getElementById('cf-email'),
+      cpf:   document.getElementById('cf-cpf'),
+      tel:   document.getElementById('cf-tel')
+    };
+    Object.keys(campos).forEach(function(k){ campos[k].setAttribute('aria-invalid','false'); });
+
+    var nome = campos.nome.value.trim();
+    if (nome.length < 3 || nome.indexOf(' ') === -1) {
+      erros.push('Informe seu nome completo.'); campos.nome.setAttribute('aria-invalid','true');
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(campos.email.value.trim())) {
+      erros.push('E-mail inválido.'); campos.email.setAttribute('aria-invalid','true');
+    }
+    if (!cpfValido(campos.cpf.value)) {
+      erros.push('CPF inválido.'); campos.cpf.setAttribute('aria-invalid','true');
+    }
+    var tel = digitos(campos.tel.value);
+    if (tel.length < 10 || tel.length > 11) {
+      erros.push('Celular inválido (DDD + número).'); campos.tel.setAttribute('aria-invalid','true');
+    }
+
+    if (erros.length) {
+      elErros.innerHTML = '<ul>' + erros.map(function(e){ return '<li>' + e + '</li>'; }).join('') + '</ul>';
+      elErros.hidden = false;
+      return null;
+    }
+    elErros.hidden = true;
+    return {
+      name: nome,
+      email: campos.email.value.trim(),
+      document: digitos(campos.cpf.value),
+      phone: tel
+    };
+  }
+
+  /* --- gerar a cobrança --- */
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    var dados = validar();
+    if (!dados) return;
+
+    dados.bumps = marcados();
+    dados.tracking = TRACKING;
+
+    btn.disabled = true;
+    btnTxt.textContent = 'GERANDO…';
+
+    fetch('/api/criar-pix', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(dados)
+    })
+      .then(function(r){ return r.json().then(function(j){ return { ok: r.ok, corpo: j }; }); })
+      .then(function(res){
+        if (!res.ok) {
+          var msg = res.corpo.detalhes
+            ? res.corpo.erro + ' (' + res.corpo.detalhes + ')'
+            : (res.corpo.erro || 'Não foi possível gerar o Pix.');
+          if (res.corpo.detalhes && Array.isArray(res.corpo.detalhes)) {
+            msg = '<ul>' + res.corpo.detalhes.map(function(d){ return '<li>' + d + '</li>'; }).join('') + '</ul>';
+            elErros.innerHTML = msg;
+          } else {
+            elErros.textContent = msg;
+          }
+          elErros.hidden = false;
+          return;
+        }
+        mostrarPix(res.corpo);
+      })
+      .catch(function(){
+        elErros.textContent = 'Falha de conexão. Verifique a internet e tente de novo.';
+        elErros.hidden = false;
+      })
+      .finally(function(){
+        btn.disabled = false;
+        btnTxt.textContent = 'GERAR CÓDIGO PIX';
+      });
+  });
+
+  /* --- etapa do QR --- */
+  function mostrarPix(d){
+    document.getElementById('pix-codigo').value = d.copiaECola;
+
+    var resumo = (d.itens || []).map(function(i){
+      return '<li><span>' + i.titulo + '</span><span>' + reais(i.amount) + '</span></li>';
+    }).join('');
+    document.getElementById('pix-resumo').innerHTML =
+      resumo + '<li><span>Total</span><span>' + reais(d.valor) + '</span></li>';
+
+    var canvas = document.getElementById('pix-qr');
+    var img    = document.getElementById('pix-qr-img');
+
+    if (d.imagemQr) {
+      img.src = d.imagemQr; img.hidden = false; canvas.hidden = true;
+    } else if (window.QRious) {
+      canvas.hidden = false; img.hidden = true;
+      new QRious({ element: canvas, value: d.copiaECola, size: 216, level: 'M' });
+    } else {
+      // Sem a biblioteca do QR o copia e cola ainda resolve.
+      canvas.hidden = true;
+      document.querySelector('.pix__qr').hidden = true;
+    }
+
+    mostrarEtapa('pix');
+    iniciarPolling(d.hash);
+  }
+
+  document.getElementById('btn-copiar').addEventListener('click', function(){
+    var campo = document.getElementById('pix-codigo');
+    var botao = this;
+    function feedback(){
+      botao.textContent = 'Copiado!';
+      setTimeout(function(){ botao.textContent = 'Copiar'; }, 2000);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(campo.value).then(feedback, selecionar);
+    } else {
+      selecionar();
+    }
+    function selecionar(){
+      campo.removeAttribute('readonly');
+      campo.select(); campo.setSelectionRange(0, 99999);
+      try { document.execCommand('copy'); feedback(); } catch (e) {}
+      campo.setAttribute('readonly', '');
+    }
+  });
+
+  /* --- polling do status --- */
+  function iniciarPolling(hash){
+    if (!hash) return;
+    pararPolling();
+    var tentativas = 0;
+    polling = setInterval(function(){
+      tentativas++;
+      // ~15 min de espera; depois disso a cobrança segue válida, mas paramos
+      // de consultar para não bater na API à toa.
+      if (tentativas > 300) return pararPolling();
+
+      fetch('/api/status?hash=' + encodeURIComponent(hash))
+        .then(function(r){ return r.ok ? r.json() : null; })
+        .then(function(s){
+          if (!s) return;
+          if (s.pago) { pararPolling(); mostrarEtapa('ok'); }
+          else if (s.finalizado) {
+            pararPolling();
+            document.getElementById('pix-status').textContent = 'Cobrança cancelada ou expirada.';
+          }
+        })
+        .catch(function(){ /* falha de rede: tenta de novo no proximo ciclo */ });
+    }, 3000);
+  }
+
+  function pararPolling(){
+    if (polling) { clearInterval(polling); polling = null; }
+  }
 })();
 
 /* ---------- Data de hoje + contagem regressiva real até a meia-noite ---------- */

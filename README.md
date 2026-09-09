@@ -6,10 +6,12 @@ sem framework e sem etapa de build.
 ## Rodando localmente
 
 ```bash
-python -m http.server 4173
+npm run dev
 ```
 
-Depois abra <http://localhost:4173>.
+Sobe <http://localhost:4173> servindo a página **e** rodando os handlers de `/api`,
+para o checkout funcionar igual em produção. Sem o `.env` a página carrega e o
+modal abre; só a geração do Pix responde "indisponível".
 
 ## Estrutura
 
@@ -27,6 +29,14 @@ Depois abra <http://localhost:4173>.
 | `api/diagnostico.js` | `GET` — o que ainda falta configurar |
 
 ## Checkout Pix (IronPay)
+
+O pagamento acontece **na própria página**: os CTAs abrem um modal com os dados do
+comprador e os 7 order bumps, e o Pix (QR Code + copia e cola) aparece ali mesmo.
+O status é consultado a cada 3s até o pagamento cair.
+
+Os CTAs continuam sendo `<a href>` apontando para a oferta na IronPay. O clique é
+interceptado por JavaScript — se o script falhar, o link ainda leva a um checkout
+que funciona, em vez de virar um botão morto.
 
 ### Configurando
 
