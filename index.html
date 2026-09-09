@@ -375,6 +375,13 @@ body.modal-aberto{overflow:hidden}
 .bump:hover{border-color:var(--amber)}
 .bump--marcado{border-style:solid;border-color:var(--green);background:rgba(22,163,74,.06)}
 .bump input{width:20px;height:20px;flex:none;margin:2px 0 0;accent-color:var(--green)}
+.bump__texto{flex:1;min-width:0}
+/* Caixa de altura fixa com `contain`: as capas vem em 2:3 e uma delas em 1:1,
+   entao `cover` cortaria a arte de uma so. */
+.bump__capa{
+  flex:none;width:52px;height:74px;object-fit:contain;
+  border-radius:7px;background:#fff;border:1px solid var(--line);
+}
 .bump__nome{font-size:13.5px;font-weight:700;line-height:1.3;display:block}
 /* display:block porque sao <span>: sem isso as margens verticais nao valem
    e a descricao cola no preco. */
@@ -1132,9 +1139,15 @@ var TRACKING = (function(){
 
     lista.innerHTML = bumps.map(function(b){
       var de = b.amountDe ? '<s>' + reais(b.amountDe) + '</s>' : '';
+      // alt vazio: o titulo do produto vem logo ao lado, e repetir so
+      // duplicaria a leitura para quem usa leitor de tela.
+      var capa = b.capa
+        ? '<img class="bump__capa" src="' + b.capa + '" alt="" loading="lazy" decoding="async" width="216" height="324">'
+        : '';
       return '<label class="bump" data-id="' + b.id + '">' +
         '<input type="checkbox" value="' + b.id + '">' +
-        '<span>' +
+        capa +
+        '<span class="bump__texto">' +
           '<span class="bump__nome">' + b.titulo + '</span>' +
           (b.descricao ? '<span class="bump__desc">' + b.descricao + '</span>' : '') +
           '<span class="bump__preco">' + de + reais(b.amount) + '</span>' +

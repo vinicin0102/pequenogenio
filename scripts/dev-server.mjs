@@ -64,8 +64,11 @@ const servidor = createServer(async (req, res) => {
     const nome = url.pathname.slice(5).replace(/[^a-z0-9-]/gi, '');
     const arquivo = join(RAIZ, 'api', nome + '.js');
     try {
-      // Recarrega a cada chamada para editar o handler sem reiniciar o servidor.
-      delete require.cache[require.resolve(arquivo)];
+      // Limpa o cache de TODOS os modulos do projeto, nao so do handler: sem
+      // isso uma edicao em lib/ ou em catalog.json so aparece reiniciando.
+      for (const id of Object.keys(require.cache)) {
+        if (id.startsWith(RAIZ) && !id.includes('node_modules')) delete require.cache[id];
+      }
       const handler = require(arquivo);
       req.query = Object.fromEntries(url.searchParams);
       req.body = req.method === 'POST' ? await lerCorpo(req) : undefined;

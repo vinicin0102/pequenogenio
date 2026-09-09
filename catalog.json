@@ -18,7 +18,8 @@
       "title": "Mundo Divertido: Guia dos Brinquedos Caseiros - 2ª Edição",
       "price_cents": 890,
       "price_from_cents": 3400,
-      "descricao": "Material com +100 vídeos passo a passo e +500 PDFs de montagem detalhados com brinquedos caseiros para você e seu pequeno."
+      "descricao": "Material com +100 vídeos passo a passo e +500 PDFs de montagem detalhados com brinquedos caseiros para você e seu pequeno.",
+      "cover": "/assets/bumps/bump1.webp"
     },
     {
       "id": "bump2",
@@ -27,7 +28,8 @@
       "title": "+100 Experimentos Científicos ao Ar Livre para Crianças - 3ª Edição",
       "price_cents": 890,
       "price_from_cents": 3400,
-      "descricao": "Desperte o pequeno cientista que existe no seu filho: mais de 100 experimentos simples e seguros para o quintal, o parque ou a escola."
+      "descricao": "Desperte o pequeno cientista que existe no seu filho: mais de 100 experimentos simples e seguros para o quintal, o parque ou a escola.",
+      "cover": "/assets/bumps/bump2.webp"
     },
     {
       "id": "bump3",
@@ -36,7 +38,8 @@
       "title": "Alimentação Infantil Divertida - Um Guia Para os Pais",
       "price_cents": 790,
       "price_from_cents": 3400,
-      "descricao": "Chega de briga na hora de comer. Estratégias práticas e receitas criativas para tornar a alimentação saudável um momento divertido."
+      "descricao": "Chega de briga na hora de comer. Estratégias práticas e receitas criativas para tornar a alimentação saudável um momento divertido.",
+      "cover": "/assets/bumps/bump3.webp"
     },
     {
       "id": "bump4",
@@ -45,7 +48,8 @@
       "title": "Histórias Mágicas para Dormir",
       "price_cents": 690,
       "price_from_cents": 3400,
-      "descricao": "Historinhas curtas e encantadas com lições leves de autoestima, coragem, gentileza e empatia para fechar o dia com tranquilidade."
+      "descricao": "Historinhas curtas e encantadas com lições leves de autoestima, coragem, gentileza e empatia para fechar o dia com tranquilidade.",
+      "cover": "/assets/bumps/bump4.webp"
     },
     {
       "id": "bump5",
@@ -54,7 +58,8 @@
       "title": "50 Brincadeiras Bíblicas para Fazer com Crianças",
       "price_cents": 790,
       "price_from_cents": 3400,
-      "descricao": "Atividades e jogos inspirados em histórias bíblicas para fortalecer a fé e aproximar as crianças dos ensinamentos de um jeito alegre."
+      "descricao": "Atividades e jogos inspirados em histórias bíblicas para fortalecer a fé e aproximar as crianças dos ensinamentos de um jeito alegre.",
+      "cover": "/assets/bumps/bump5.webp"
     },
     {
       "id": "bump6",
@@ -63,7 +68,8 @@
       "title": "Uno da Matemática + Atividades Infantis - Kit Premium",
       "price_cents": 788,
       "price_from_cents": 3990,
-      "descricao": "Praticar as quatro operações jogando. Materiais exclusivos em PDF e bônus para tornar cada aula inesquecível."
+      "descricao": "Praticar as quatro operações jogando. Materiais exclusivos em PDF e bônus para tornar cada aula inesquecível.",
+      "cover": "/assets/bumps/bump6.webp"
     },
     {
       "id": "bump7",
@@ -72,7 +78,8 @@
       "title": "+50 Atividades Pedagógicas para Aprender Brincando",
       "price_cents": 550,
       "price_from_cents": 2990,
-      "descricao": "Mais de 50 atividades criativas para estimular raciocínio, coordenação e imaginação, de forma leve e prazerosa."
+      "descricao": "Mais de 50 atividades criativas para estimular raciocínio, coordenação e imaginação, de forma leve e prazerosa.",
+      "cover": "/assets/bumps/bump7.webp"
     }
   ]
 }

@@ -19,6 +19,7 @@ modal abre; só a geração do Pix responde "indisponível".
 | --- | --- |
 | `index.html` | A página de venda: HTML, CSS e JS num arquivo só |
 | `catalog.json` | Funil: 1 produto front + 7 order bumps |
+| `assets/bumps/` | Capas dos order bumps (webp, 216px) |
 | `lib/ironpay.js` | Cliente da API da IronPay |
 | `lib/ofertas.js` | **Fonte da verdade de preço** — monta o pedido |
 | `lib/validacao.js` | Valida nome, e-mail, CPF e telefone |
