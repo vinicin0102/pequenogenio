@@ -69,11 +69,18 @@ postback é reenviado.
 
 ### Meta Pixel
 
-Pixel `624262646647561`. Eventos disparados no navegador:
+Pixel `1405348347683200`, definido uma única vez em `window.META_PIXEL_ID` no `<head>`.
+
+Os eventos usam `trackSingle` apontando para esse ID, em vez do `track` comum. O `track`
+dispara para **todos** os pixels inicializados na página — se um segundo for instalado
+depois, tudo passaria a ser contado em dobro sem ninguém perceber.
+
+Eventos disparados no navegador:
 
 | Evento | Quando | Valor |
 | --- | --- | --- |
 | `PageView` | Carregamento da página | — |
+| `ViewContent` | Play no vídeo (uma vez por sessão) | — |
 | `InitiateCheckout` | Modal abre (após as ofertas carregarem) | Total atual |
 | `AddToCart` | Order bump **marcado** | Só o bump |
 | `AddPaymentInfo` | Pix gerado | Total cobrado pelo servidor |

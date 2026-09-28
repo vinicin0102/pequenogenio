@@ -24,6 +24,11 @@
 
 <!-- Meta Pixel -->
 <script>
+  /* Um unico lugar com o ID. Os eventos usam trackSingle apontando para ele:
+     assim, se um segundo pixel for instalado depois, nada passa a ser enviado
+     em dobro sem querer — o `track` normal dispara para TODOS os inicializados. */
+  window.META_PIXEL_ID = '1405348347683200';
+
   !function(f,b,e,v,n,t,s)
   {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
   n.callMethod.apply(n,arguments):n.queue.push(arguments)};
@@ -33,11 +38,11 @@
   s.parentNode.insertBefore(t,s)}(window,document,'script',
   'https://connect.facebook.net/en_US/fbevents.js');
 
-  fbq('init', '624262646647561');
-  fbq('track', 'PageView');
+  fbq('init', window.META_PIXEL_ID);
+  fbq('trackSingle', window.META_PIXEL_ID, 'PageView');
 </script>
 <noscript><img height="1" width="1" style="display:none"
-  src="https://www.facebook.com/tr?id=624262646647561&ev=PageView&noscript=1" alt=""></noscript>
+  src="https://www.facebook.com/tr?id=1405348347683200&ev=PageView&noscript=1" alt=""></noscript>
 
 <style>
 :root{
@@ -1106,7 +1111,10 @@ var PixelEventos = (function(){
     }
     if (typeof fbq !== 'function') return; // bloqueador de anuncios
     try {
-      fbq(opcoes.customizado ? 'trackCustom' : 'track', evento, dados || {}, { eventID: novoId(evento) });
+      // trackSingle/trackSingleCustom: manda so para o nosso pixel, mesmo que
+      // outro venha a ser inicializado na pagina depois.
+      fbq(opcoes.customizado ? 'trackSingleCustom' : 'trackSingle',
+          window.META_PIXEL_ID, evento, dados || {}, { eventID: novoId(evento) });
     } catch (e) { /* pixel nunca pode derrubar o checkout */ }
   }
 
