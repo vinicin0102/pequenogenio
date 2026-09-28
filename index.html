@@ -12,7 +12,9 @@
 <meta property="og:locale" content="pt_BR">
 <meta property="og:title" content="Guia dos Projetos Robóticos — Edição Especial">
 <meta property="og:description" content="+100 projetos de robótica em vídeo, passo a passo, com materiais simples. Acesso imediato e vitalício por R$ 10.">
-<meta property="og:image" content="https://projetogeniobrasil.com.br/robotica/assets/ChatGPT_Image_14_de_jan._de_2026__17_42_38_1768424600319-B6or5Ia3.png">
+<!-- og:image precisa de URL absoluta para o Facebook/WhatsApp lerem.
+     Trocar o dominio abaixo quando a pagina for publicada. -->
+<meta property="og:image" content="/assets/projetos/projeto-01.webp">
 <meta name="twitter:card" content="summary_large_image">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -103,7 +105,7 @@ a{color:inherit}
 /* ---------- hero ---------- */
 .hero{
   background-color:var(--cream);
-  background-image:url("https://projetogeniobrasil.com.br/robotica/assets/hero-bg-LiBD0rkx.webp");
+  background-image:url("/assets/hero-bg.webp");
   background-size:cover;background-position:center;
   padding:48px 0 64px;position:relative;
 }
@@ -164,6 +166,51 @@ a{color:inherit}
 .cta-note{margin-top:14px;font-size:13.5px;color:var(--muted)}
 
 /* ---------- destaque de conteúdo ---------- */
+/* ---------- vídeo de demonstração ---------- */
+.video{
+  /* O vídeo é 9:16. Em tela cheia no celular ele ocuparia quase 700px de
+     altura e empurraria o CTA para fora — daí o teto de largura. */
+  width:min(250px,72vw);margin:32px auto 0;position:relative;
+  border-radius:20px;overflow:hidden;background:var(--ink);
+  box-shadow:0 14px 36px rgba(24,24,37,.28);
+  aspect-ratio:408/720;
+}
+@media(min-width:768px){.video{width:290px}}
+.video video{
+  width:100%;height:100%;display:block;object-fit:cover;background:var(--ink);
+}
+.video__play{
+  position:absolute;inset:0;width:100%;height:100%;
+  display:flex;align-items:center;justify-content:center;
+  border:0;cursor:pointer;padding:0;
+  background:rgba(24,24,37,.28);
+  transition:opacity .25s ease,background .25s ease;
+}
+.video__play::before{
+  content:'';width:66px;height:66px;border-radius:50%;
+  background:rgba(255,255,255,.95);
+  box-shadow:0 6px 20px rgba(0,0,0,.32);
+}
+/* Triângulo feito com bordas, deslocado 7px à direita: o centro visual de um
+   triângulo não é o geométrico, e centralizado "certo" ele parece torto. */
+.video__play::after{
+  content:'';position:absolute;
+  border-style:solid;border-width:15px 0 15px 25px;
+  border-color:transparent transparent transparent var(--red);
+  margin-left:7px;
+}
+.video--tocando .video__play{opacity:0;pointer-events:none}
+/* Só em aparelho com ponteiro de verdade: no celular o :hover gruda depois do
+   toque e o botão ficaria por cima do vídeo tocando. */
+@media (hover:hover){
+  .video__play:hover{background:rgba(24,24,37,.14)}
+  .video--tocando:hover .video__play{opacity:1;pointer-events:auto;background:rgba(24,24,37,.2)}
+}
+.video__legenda{
+  font-size:12.5px;font-weight:700;color:var(--ink-soft);
+  text-align:center;margin:12px auto 0;max-width:30ch;
+}
+
 .highlight{
   background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
   box-shadow:var(--shadow);padding:24px;max-width:820px;margin:40px auto 0;
@@ -542,8 +589,8 @@ body.modal-aberto{overflow:hidden}
 <header class="hero">
   <div class="wrap center">
     <span class="eyebrow">Guia dos Projetos Robóticos</span>
-    <h1>Transforme materiais simples em projetos de <span class="accent">robótica</span></h1>
-    <p class="hero__sub">Projetos simples, criativos e gravados em vídeo para você fazer em casa usando materiais fáceis de encontrar.</p>
+    <h1>Seu filho larga o celular quando monta o <span class="accent">próprio robô</span></h1>
+    <p class="hero__sub">+100 projetos de robótica com materiais que já existem na sua casa. O passo a passo é em vídeo curto, do jeito que a criança acompanha sozinha — e você só assiste.</p>
 
     <ul class="features" style="list-style:none;padding:0">
       <li class="feature feature--blue"><span class="ico" aria-hidden="true">🤖</span> Projetos de robótica passo a passo em vídeo</li>
@@ -564,6 +611,22 @@ body.modal-aberto{overflow:hidden}
       </a>
     </p>
     <p class="cta-note">Pagamento único de R$ 10 &middot; Garantia de 7 dias</p>
+
+    <div class="video" id="video-demo">
+      <video id="video-projetos"
+             src="/assets/video-projetos.mp4"
+             preload="metadata"
+             playsinline
+             webkit-playsinline
+             disablepictureinpicture
+             controlslist="nodownload noplaybackrate noremoteplayback"
+             width="408" height="720">
+        Seu navegador não reproduz vídeo.
+        <a href="/assets/video-projetos.mp4">Baixe o vídeo</a>.
+      </video>
+      <button type="button" class="video__play" id="video-botao" aria-label="Assistir ao vídeo"></button>
+    </div>
+    <p class="video__legenda">Veja o que dá para montar em menos de uma tarde</p>
 
     <div class="highlight center">
       <p>👉 Acesso imediato a <strong>+100 vídeos de projetos robóticos</strong>, com passo a passo simples, para desenvolver criatividade, lógica e habilidades tecnológicas enquanto se aprende fazendo.</p>
@@ -693,13 +756,13 @@ body.modal-aberto{overflow:hidden}
     <h2 style="font-size:clamp(1.4rem,3.6vw,2.25rem)">O QUE OS CLIENTES DIZEM SOBRE O GUIA DOS PROJETOS ROBÓTICOS</h2>
     <div class="proof reveal">
       <img loading="lazy" decoding="async" width="361" height="606"
-        src="https://projetogeniobrasil.com.br/robotica/assets/Projeto_G%C3%AAnio_Brasil_1768444391428-BbgSWkS8.png"
+        src="/assets/prova/print-pamela.webp"
         alt="Print de conversa no WhatsApp com o feedback da cliente Pamela">
       <img loading="lazy" decoding="async" width="361" height="606"
-        src="https://projetogeniobrasil.com.br/robotica/assets/C%C3%B3pia_de_Projeto_G%C3%AAnio_Brasil_1768444391429-iThg5izz.png"
+        src="/assets/prova/print-pedro.webp"
         alt="Print de conversa no WhatsApp com o feedback do cliente Pedro">
       <img loading="lazy" decoding="async" width="361" height="606"
-        src="https://projetogeniobrasil.com.br/robotica/assets/C%C3%B3pia_de_C%C3%B3pia_de_Projeto_G%C3%AAnio_Brasil_1768444391428-CFHdajdQ.png"
+        src="/assets/prova/print-natalia.webp"
         alt="Print de conversa no WhatsApp com o feedback da cliente Natália">
     </div>
   </div>
@@ -709,8 +772,8 @@ body.modal-aberto{overflow:hidden}
 <section class="section guarantee" id="oferta">
   <div class="wrap">
     <div class="guarantee__box reveal">
-      <img loading="lazy" decoding="async" width="1536" height="1024"
-        src="https://projetogeniobrasil.com.br/robotica/assets/Design_sem_nome_(8)_1767764365238-2VvuE11C.png"
+      <img loading="lazy" decoding="async" width="896" height="598"
+        src="/assets/garantia.webp"
         alt="Selo de garantia incondicional de 7 dias">
       <div>
         <h3 style="font-size:1.4rem;margin-bottom:10px">Garantia incondicional de 7 dias</h3>
@@ -726,7 +789,7 @@ body.modal-aberto{overflow:hidden}
         <p class="bonus-card__n">Bônus 1</p>
         <h3 class="bonus-card__title">Guia da Robótica para Iniciantes (Primeiros Passos)</h3>
         <img class="bonus-card__cover" loading="lazy" decoding="async" width="800" height="1200"
-          src="https://projetogeniobrasil.com.br/robotica/assets/bonus1-cover-BKbk0fYm.webp"
+          src="/assets/bonus1.webp"
           alt="Capa do Bônus 1: Guia da Robótica para Iniciantes (Primeiros Passos)">
       </article>
 
@@ -735,7 +798,7 @@ body.modal-aberto{overflow:hidden}
         <p class="bonus-card__n">Bônus 2</p>
         <h3 class="bonus-card__title">100 Truques de Mágicas Passo a Passo</h3>
         <img class="bonus-card__cover" loading="lazy" decoding="async" width="1024" height="1536"
-          src="https://projetogeniobrasil.com.br/robotica/assets/C%C3%B3pia_de_C%C3%B3pia_de_C%C3%B3pia_de_Sem_nome_(1)_1767588095961-DYmSd7iC.png"
+          src="/assets/bonus-magicas.webp"
           alt="Capa do Bônus 2: 100 Truques de Mágicas Passo a Passo">
       </article>
 
@@ -744,7 +807,7 @@ body.modal-aberto{overflow:hidden}
         <p class="bonus-card__n">Bônus 3</p>
         <h3 class="bonus-card__title">27 Mágicas com Cartas para Aprender em Casa</h3>
         <img class="bonus-card__cover" loading="lazy" decoding="async" width="1024" height="1536"
-          src="https://projetogeniobrasil.com.br/robotica/assets/C%C3%B3pia_de_C%C3%B3pia_de_C%C3%B3pia_de_C%C3%B3pia_de_Sem_nome_1767588314352-BYXA_GeW.png"
+          src="/assets/bonus-cartas.webp"
           alt="Capa do Bônus 3: 27 Mágicas com Cartas para Aprender em Casa">
       </article>
 
@@ -753,7 +816,7 @@ body.modal-aberto{overflow:hidden}
         <p class="bonus-card__n">Bônus 4</p>
         <h3 class="bonus-card__title">Piadas Infantis — Para Rir com Pais e Filhos</h3>
         <img class="bonus-card__cover" loading="lazy" decoding="async" width="1024" height="1536"
-          src="https://projetogeniobrasil.com.br/robotica/assets/C%C3%B3pia_de_C%C3%B3pia_de_C%C3%B3pia_de_C%C3%B3pia_de_C%C3%B3pia_de_Sem_nome_1767588710681-DW_7l6TW.png"
+          src="/assets/bonus-piadas.webp"
           alt="Capa do Bônus 4: Piadas Infantis para rir com pais e filhos">
       </article>
 
@@ -762,7 +825,7 @@ body.modal-aberto{overflow:hidden}
         <p class="bonus-card__n">Bônus 5</p>
         <h3 class="bonus-card__title">100 Atividades Criativas – Diversão e Aprendizado em Família</h3>
         <img class="bonus-card__cover" loading="lazy" decoding="async" width="1024" height="1536"
-          src="https://projetogeniobrasil.com.br/robotica/assets/C%C3%B3pia_de_C%C3%B3pia_de_C%C3%B3pia_de_C%C3%B3pia_de_C%C3%B3pia_de_C%C3%B3pia_de_C%C3%B3pia_de_1768444927138-DVmjcVuF.png"
+          src="/assets/bonus-atividades.webp"
           alt="Capa do Bônus 5: 100 Atividades Criativas para diversão e aprendizado em família">
       </article>
     </div>
@@ -936,30 +999,20 @@ body.modal-aberto{overflow:hidden}
 <script>
 document.documentElement.classList.add('js');
 
-/* ---------- Galeria de projetos (evita repetir 26 <img> no HTML) ---------- */
+/* ---------- Galeria de projetos ----------
+   Arquivos locais em /assets/projetos. Antes apontavam para o dominio do site
+   original; ele foi republicado, os nomes com hash mudaram e as 19 imagens
+   viraram links quebrados de uma hora para outra. */
 (function(){
-  var base='https://projetogeniobrasil.com.br/robotica/assets/';
-  /* As artes já trazem o nome do projeto impresso, então não repetimos em legenda. */
-  var itens=[
-    'ChatGPT_Image_14_de_jan._de_2026__17_42_38_1768424600319-B6or5Ia3.png',
-    'ChatGPT_Image_14_de_jan._de_2026__18_00_11_1768424602266-BEdRsKn6.png',
-    'ChatGPT_Image_14_de_jan._de_2026__18_01_28_1768424606778-q3BzotnA.png',
-    'ChatGPT_Image_14_de_jan._de_2026__18_01_43_1768424611885-DugKkqzO.png',
-    'ChatGPT_Image_14_de_jan._de_2026__18_01_46_1768424614157-DpOd74fq.png',
-    'ChatGPT_Image_14_de_jan._de_2026__18_01_55_1768424617982-Iax7c2ev.png',
-    'ChatGPT_Image_14_de_jan._de_2026__18_02_07_1768424622145-GGB1ZTwU.png',
-    'ChatGPT_Image_14_de_jan._de_2026__18_02_12_1768424626780-CZDHaoow.png',
-    'ChatGPT_Image_14_de_jan._de_2026__18_02_20_1768424630178-BXLeODXN.png',
-    'ChatGPT_Image_14_de_jan._de_2026__18_02_24_1768424633653-CA7DD_kF.png',
-    'ChatGPT_Image_14_de_jan._de_2026__18_02_27_1768424637264-DV0k-iUv.png',
-    'ChatGPT_Image_14_de_jan._de_2026__18_00_11_1768424602266-BEdRsKn6.png'
-  ];
-  var alvo=document.getElementById('galeria');
+  /* As artes ja trazem o nome do projeto impresso, entao nao repetimos em legenda. */
+  var itens = ['01','03','04','05','06','07','08','09','10','11'];
+  var alvo = document.getElementById('galeria');
   if(!alvo) return;
-  alvo.innerHTML=itens.map(function(arq,i){
+  alvo.innerHTML = itens.map(function(n,i){
     return '<figure class="project">'+
-      '<img '+(i<4?'':'loading="lazy" ')+'decoding="async" width="1024" height="1024" src="'+base+arq+
-      '" alt="Exemplo de projeto de robótica ensinado no guia (' +(i+1)+ ' de ' +itens.length+ ')">'+
+      '<img '+(i<4?'':'loading="lazy" ')+'decoding="async" width="640" height="640" '+
+      'src="/assets/projetos/projeto-'+n+'.webp" '+
+      'alt="Exemplo de projeto de robótica ensinado no guia (' +(i+1)+ ' de ' +itens.length+ ')">'+
       '</figure>';
   }).join('');
 })();
@@ -993,6 +1046,42 @@ var TRACKING = (function(){
     var u=new URL(a.href);
     p.forEach(function(v,k){ if(!u.searchParams.has(k)) u.searchParams.set(k,v); });
     a.href=u.toString();
+  });
+})();
+
+/* ================= VÍDEO =================
+   Sem os controles nativos: só o botão de play sobreposto. Tocar no vídeo
+   pausa e o botão volta, então nunca fica sem saída. */
+(function(){
+  var caixa = document.getElementById('video-demo');
+  var video = document.getElementById('video-projetos');
+  var botao = document.getElementById('video-botao');
+  if (!caixa || !video || !botao) return;
+
+  function alternar(){
+    if (video.paused) {
+      var p = video.play();
+      // Em iOS o play() pode ser recusado; sem o catch vira erro nao tratado.
+      if (p && p.catch) p.catch(function(){ caixa.classList.remove('video--tocando'); });
+    } else {
+      video.pause();
+    }
+  }
+
+  botao.addEventListener('click', alternar);
+  video.addEventListener('click', alternar);
+
+  video.addEventListener('play',  function(){ caixa.classList.add('video--tocando'); });
+  video.addEventListener('pause', function(){ caixa.classList.remove('video--tocando'); });
+  video.addEventListener('ended', function(){
+    caixa.classList.remove('video--tocando');
+    video.currentTime = 0; // volta para o primeiro quadro, e nao para o preto final
+  });
+
+  // Marca no pixel quem assistiu — sinal forte de interesse, uma vez por sessao.
+  video.addEventListener('play', function(){
+    PixelEventos.rastrear('ViewContent', { content_name: 'video-demo', content_type: 'video' },
+                          { umaVezPor: 'video-demo' });
   });
 })();
 

@@ -34,7 +34,9 @@ const TIPOS = {
   '.css': 'text/css; charset=utf-8',
   '.svg': 'image/svg+xml',
   '.png': 'image/png',
-  '.webp': 'image/webp'
+  '.webp': 'image/webp',
+  '.mp4': 'video/mp4',
+  '.webm': 'video/webm'
 };
 
 /** Resposta com a mesma interface que os handlers usam na Vercel. */
@@ -88,8 +90,25 @@ const servidor = createServer(async (req, res) => {
 
   try {
     const conteudo = await readFile(alvo);
-    res.setHeader('Content-Type', TIPOS[extname(alvo)] || 'application/octet-stream');
+    const tipo = TIPOS[extname(alvo)] || 'application/octet-stream';
+    res.setHeader('Content-Type', tipo);
     res.setHeader('Cache-Control', 'no-store');
+
+    // Safari e o iOS so tocam video se o servidor responder a Range com 206.
+    // A Vercel ja faz isso sozinha; aqui precisa ser na mao.
+    const range = req.headers.range;
+    if (range && tipo.startsWith('video/')) {
+      const m = /bytes=(\d*)-(\d*)/.exec(range);
+      const inicio = m && m[1] ? Number(m[1]) : 0;
+      const fim = m && m[2] ? Number(m[2]) : conteudo.length - 1;
+      res.statusCode = 206;
+      res.setHeader('Content-Range', `bytes ${inicio}-${fim}/${conteudo.length}`);
+      res.setHeader('Accept-Ranges', 'bytes');
+      res.setHeader('Content-Length', fim - inicio + 1);
+      return res.end(conteudo.subarray(inicio, fim + 1));
+    }
+    if (tipo.startsWith('video/')) res.setHeader('Accept-Ranges', 'bytes');
+
     res.end(conteudo);
   } catch {
     res.status(404).end('404');
