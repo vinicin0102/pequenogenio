@@ -278,6 +278,43 @@ a{color:inherit}
 .checklist .tick{color:var(--green);font-weight:800;flex:none}
 .checklist li:last-child{background:var(--ink);color:#fff;border-color:var(--ink);justify-content:center}
 
+/* ---------- O QUE VOCÊ VAI APRENDER ---------- */
+.aprender{max-width:900px;margin-inline:auto;text-align:left}
+.faixa{
+  border-radius:14px;padding:16px 20px;text-align:center;
+  font-family:Poppins,sans-serif;font-weight:800;line-height:1.35;
+  font-size:clamp(.95rem,2.6vw,1.1rem);
+}
+.faixa--verde{background:var(--bonus-green);color:#fff;box-shadow:0 8px 22px rgba(74,165,79,.28)}
+.faixa--laranja{background:#F0913C;color:var(--ink);box-shadow:0 8px 22px rgba(240,145,60,.3)}
+
+.aprender__topo{
+  background:var(--amber);color:#fff;text-align:center;
+  font-family:Poppins,sans-serif;font-weight:800;letter-spacing:.06em;
+  text-transform:uppercase;font-size:clamp(1.05rem,3.2vw,1.45rem);
+  padding:18px 20px;border-radius:14px;
+  box-shadow:0 8px 22px rgba(248,185,58,.35);
+  /* Encosta no card de baixo, como no layout de referência. */
+  position:relative;z-index:1;margin-bottom:-6px;
+}
+.aprender__card{
+  background:#fff;border:1px solid var(--line);border-radius:14px;
+  box-shadow:var(--shadow);padding:26px 22px;
+}
+.aprender__intro{font-weight:800;font-size:1.02rem;margin:0 0 18px}
+.aprender__lista{display:grid;gap:16px}
+.aprender__item{display:flex;gap:12px;align-items:flex-start}
+.aprender__check{
+  flex:none;width:24px;height:24px;border-radius:7px;
+  background:rgba(22,163,74,.14);color:var(--green);
+  display:flex;align-items:center;justify-content:center;
+  font-size:15px;font-weight:900;line-height:1;margin-top:1px;
+}
+.aprender__texto{font-size:15.5px;line-height:1.5;margin:0}
+.aprender__texto strong{color:var(--red)}
+.aprender__sub{margin:8px 0 0;padding-left:20px;font-size:14.5px;line-height:1.7}
+.aprender__sub li{list-style:disc;font-weight:600}
+
 /* ---------- FAQ ---------- */
 .faq{max-width:780px;margin:36px auto 0;display:grid;gap:12px}
 .faq details{
@@ -704,6 +741,60 @@ body.modal-aberto{overflow:hidden}
         QUERO COMEÇAR AGORA POR APENAS R$ 10
       </a>
     </p>
+
+    <!-- ===== O QUE VOCÊ VAI APRENDER ===== -->
+    <div class="aprender reveal" style="margin-top:72px">
+      <p class="faixa faixa--verde">
+        ✨ E isso é só o começo: são mais de 100 projetos para transformar cada tarde em uma nova aventura!
+      </p>
+
+      <h3 class="aprender__topo" style="margin-top:28px">O que você vai aprender</h3>
+
+      <div class="aprender__card">
+        <p class="aprender__intro">Ao acessar o Guia dos Projetos Robóticos, você terá acesso a:</p>
+
+        <div class="aprender__lista">
+          <div class="aprender__item">
+            <span class="aprender__check" aria-hidden="true">✓</span>
+            <p class="aprender__texto">
+              <strong>Mais de 100 vídeos</strong> passo a passo, mostrando a montagem completa
+              do início ao fim — sem cortes confusos e sem improviso
+            </p>
+          </div>
+
+          <div class="aprender__item">
+            <span class="aprender__check" aria-hidden="true">✓</span>
+            <div>
+              <p class="aprender__texto"><strong>Cada projeto documentado</strong>, com:</p>
+              <ul class="aprender__sub">
+                <li>Lista de materiais simples</li>
+                <li>Montagem explicada na ordem certa</li>
+                <li>Dicas práticas para não travar no meio</li>
+                <li>Sugestões de adaptação por idade</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="aprender__item">
+            <span class="aprender__check" aria-hidden="true">✓</span>
+            <p class="aprender__texto">
+              <strong>Atividades pensadas para desenvolver</strong> lógica, coordenação motora e
+              raciocínio, enquanto a criança constrói de forma ativa — longe das telas
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <p class="faixa faixa--laranja" style="margin-top:24px">
+        ✨ Destrave todo o potencial do desenvolvimento do seu filho agora mesmo!
+      </p>
+
+      <p style="margin-top:24px">
+        <a class="btn btn--red btn--block js-checkout" href="https://go.ironpayapp.com.br/9y9azrh8w7">
+          QUERO CONSTRUIR ROBÔS COM MEUS FILHOS AGORA!
+        </a>
+      </p>
+    </div>
   </div>
 </section>
 
