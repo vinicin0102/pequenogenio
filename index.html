@@ -335,10 +335,52 @@ a{color:inherit}
 .faq .answer{padding:16px 20px 20px;color:var(--ink-soft);font-size:15.5px}
 .faq .answer p{margin:0}
 
-/* ---------- depoimentos (prints) ---------- */
-.proof{display:grid;gap:18px;grid-template-columns:1fr;max-width:900px;margin:36px auto 0}
-@media(min-width:700px){.proof{grid-template-columns:repeat(3,1fr)}}
-.proof img{border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);width:100%}
+/* ---------- depoimentos (carrossel de prints) ---------- */
+.carrossel{position:relative;max-width:980px;margin:36px auto 0}
+.carrossel__trilho{
+  /* proximity, nao mandatory: o ultimo ponto de encaixe fica alem do scroll
+     maximo, e o mandatory rejeita a posicao final e volta o carrossel. */
+  display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x proximity;
+  scroll-behavior:smooth;padding:4px;
+  /* Esconde a barra: a navegação é pelas setas e pelo arrasto. */
+  scrollbar-width:none;-ms-overflow-style:none;
+}
+.carrossel__trilho::-webkit-scrollbar{display:none}
+@media (prefers-reduced-motion:reduce){.carrossel__trilho{scroll-behavior:auto}}
+.carrossel__item{
+  /* snap no inicio, nao no centro: com varios itens visiveis os ultimos nunca
+     conseguem ficar centrados, e o carrossel nunca chegaria ao fim. */
+  flex:0 0 auto;width:min(300px,82vw);scroll-snap-align:start;
+  background:#fff;border:1px solid var(--line);border-radius:16px;
+  box-shadow:var(--shadow);overflow:hidden;
+}
+@media(min-width:700px){.carrossel__item{width:300px}}
+.carrossel__item img{width:100%;height:auto;display:block}
+
+.carrossel__seta{
+  position:absolute;top:50%;transform:translateY(-50%);z-index:2;
+  width:44px;height:44px;border-radius:50%;cursor:pointer;
+  background:#fff;border:1px solid var(--line);
+  box-shadow:0 6px 18px rgba(24,24,37,.18);
+  font-size:20px;font-weight:800;color:var(--ink);line-height:1;
+  display:flex;align-items:center;justify-content:center;
+  transition:opacity .2s ease,background .2s ease;
+}
+.carrossel__seta:hover{background:var(--cream)}
+.carrossel__seta[disabled]{opacity:.3;cursor:default}
+.carrossel__seta--ant{left:-6px}
+.carrossel__seta--prox{right:-6px}
+@media(min-width:1040px){
+  .carrossel__seta--ant{left:-22px}
+  .carrossel__seta--prox{right:-22px}
+}
+
+.carrossel__pontos{display:flex;gap:8px;justify-content:center;margin-top:18px}
+.carrossel__ponto{
+  width:9px;height:9px;border-radius:50%;padding:0;cursor:pointer;
+  border:0;background:var(--line);transition:background .2s ease,transform .2s ease;
+}
+.carrossel__ponto[aria-current="true"]{background:var(--red);transform:scale(1.35)}
 
 /* ---------- garantia ---------- */
 .guarantee{
@@ -376,23 +418,75 @@ a{color:inherit}
 
 /* ---------- oferta ---------- */
 .offer{
-  background:var(--ink);color:#fff;border-radius:24px;padding:40px 24px;
-  max-width:720px;margin:0 auto;text-align:center;box-shadow:var(--shadow-lg);
+  position:relative;overflow:hidden;
+  background:radial-gradient(120% 95% at 50% 0%, #2b2b48 0%, #1c1c2e 52%, #141420 100%);
+  color:#fff;border-radius:26px;padding:44px 22px 36px;
+  max-width:720px;margin:0 auto;text-align:center;
+  border:2px solid rgba(248,185,58,.4);
+  box-shadow:0 26px 64px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.07);
+}
+/* Brilho quente atrás do preço — puxa o olho para o número. */
+.offer::before{
+  content:'';position:absolute;top:-38%;left:50%;transform:translateX(-50%);
+  width:560px;height:440px;pointer-events:none;
+  background:radial-gradient(circle, rgba(248,185,58,.26), transparent 62%);
+}
+.offer > *{position:relative}
+
+.offer__selo{
+  position:absolute;top:16px;right:-38px;transform:rotate(38deg);
+  background:var(--red);color:#fff;font-family:Poppins,sans-serif;font-weight:900;
+  font-size:13px;letter-spacing:.06em;padding:7px 44px;
+  box-shadow:0 6px 18px rgba(232,50,44,.5);
 }
 .offer__label{
-  display:inline-block;background:var(--amber);color:var(--ink);font-family:Poppins,sans-serif;
-  font-weight:800;font-size:12.5px;letter-spacing:.14em;padding:7px 16px;border-radius:999px;
+  display:inline-block;background:linear-gradient(135deg,#FFD467,var(--amber) 55%,#F09A1E);
+  color:#2a1c00;font-family:Poppins,sans-serif;
+  font-weight:900;font-size:12.5px;letter-spacing:.14em;padding:8px 18px;border-radius:999px;
+  box-shadow:0 6px 18px rgba(248,185,58,.4);
 }
-.offer__old{margin:24px 0 0;font-size:16px;color:#b9b9c6}
-.offer__old s{text-decoration-thickness:2px}
+.offer__old{margin:26px 0 0;font-size:16px;color:#c9c9d6;font-weight:600}
+.offer__old s{text-decoration-thickness:3px;text-decoration-color:var(--red);color:#9a9aad}
 .offer__price{
-  font-family:Poppins,sans-serif;font-weight:900;font-size:clamp(3rem,13vw,5rem);
-  line-height:1;margin:6px 0 0;color:var(--amber);
+  font-family:Poppins,sans-serif;font-weight:900;font-size:clamp(3.4rem,15vw,5.6rem);
+  line-height:1;margin:8px 0 0;letter-spacing:-.02em;
+  color:#FFC943; /* usado se background-clip:text não pegar */
+  background:linear-gradient(180deg,#FFE79A 0%,#FFC232 48%,#F59A16 100%);
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 4px 18px rgba(248,185,58,.45));
 }
-.offer__save{margin:14px auto 28px;max-width:34ch;font-size:15.5px;color:#dcdce4}
-.offer__save b{color:#fff}
-.pay-row{display:flex;flex-wrap:wrap;gap:10px 18px;justify-content:center;margin-top:22px;
-  font-size:12.5px;font-weight:600;color:#b9b9c6}
+.offer__save{margin:16px auto 26px;max-width:34ch;font-size:15.5px;color:#e4e4ee;line-height:1.5}
+.offer__save b{color:#FFD467}
+
+/* CTA com brilho passando — o único elemento animado do bloco. */
+.btn--destaque{
+  position:relative;overflow:hidden;
+  background:linear-gradient(135deg,#22C55E,#16A34A 55%,#0E8A3E);
+  box-shadow:0 12px 30px rgba(22,163,74,.45);
+  animation:respira 2.6s ease-in-out infinite;
+}
+.btn--destaque:hover{background:linear-gradient(135deg,#25D366,#15A04A 55%,#0C7A36)}
+.btn--destaque::after{
+  content:'';position:absolute;top:0;left:-140%;width:55%;height:100%;
+  background:linear-gradient(100deg,transparent,rgba(255,255,255,.4),transparent);
+  animation:brilho 3.4s ease-in-out infinite;
+}
+@keyframes respira{0%,100%{transform:scale(1)}50%{transform:scale(1.025)}}
+@keyframes brilho{0%{left:-140%}55%,100%{left:160%}}
+@media (prefers-reduced-motion:reduce){
+  .btn--destaque{animation:none}
+  .btn--destaque::after{display:none}
+}
+
+.pay-row{
+  display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:24px;
+  font-size:12px;font-weight:700;
+}
+.pay-row span{
+  background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.16);
+  color:#eaeaf4;border-radius:999px;padding:7px 12px;
+}
 
 /* ---------- rodapé ---------- */
 .footer{background:#fff;border-top:1px solid var(--line);padding:44px 0 96px;font-size:14.5px;color:var(--muted)}
@@ -850,16 +944,35 @@ body.modal-aberto{overflow:hidden}
 <section class="section" style="background:rgba(242,242,242,.45)">
   <div class="wrap center">
     <h2 style="font-size:clamp(1.4rem,3.6vw,2.25rem)">O QUE OS CLIENTES DIZEM SOBRE O GUIA DOS PROJETOS ROBÓTICOS</h2>
-    <div class="proof reveal">
-      <img loading="lazy" decoding="async" width="361" height="606"
-        src="/assets/prova/print-pamela.webp"
-        alt="Print de conversa no WhatsApp com o feedback da cliente Pamela">
-      <img loading="lazy" decoding="async" width="361" height="606"
-        src="/assets/prova/print-pedro.webp"
-        alt="Print de conversa no WhatsApp com o feedback do cliente Pedro">
-      <img loading="lazy" decoding="async" width="361" height="606"
-        src="/assets/prova/print-natalia.webp"
-        alt="Print de conversa no WhatsApp com o feedback da cliente Natália">
+    <div class="carrossel reveal" id="depoimentos">
+      <button type="button" class="carrossel__seta carrossel__seta--ant" data-dir="-1" aria-label="Depoimento anterior">‹</button>
+
+      <div class="carrossel__trilho" id="carrossel-trilho" tabindex="0" role="group" aria-label="Depoimentos de clientes no WhatsApp">
+        <figure class="carrossel__item">
+          <img loading="lazy" decoding="async" width="614" height="582" src="/assets/prova/wpp-andre.webp"
+            alt="Conversa no WhatsApp: André conta que já começou os projetos em casa e mostra o carrinho de papelão que o filho montou">
+        </figure>
+        <figure class="carrossel__item">
+          <img loading="lazy" decoding="async" width="622" height="590" src="/assets/prova/wpp-fernanda.webp"
+            alt="Conversa no WhatsApp: Fernanda mostra o robô de papelão que o filho montou na mesma tarde">
+        </figure>
+        <figure class="carrossel__item">
+          <img loading="lazy" decoding="async" width="614" height="591" src="/assets/prova/wpp-camila.webp"
+            alt="Conversa no WhatsApp: Camila mostra o jogo de argolas feito com garrafas que já tinha em casa">
+        </figure>
+        <figure class="carrossel__item">
+          <img loading="lazy" decoding="async" width="570" height="593" src="/assets/prova/wpp-pamela.webp"
+            alt="Conversa no WhatsApp: Pamela comenta que dá para fazer os projetos com o que já tem em casa">
+        </figure>
+        <figure class="carrossel__item">
+          <img loading="lazy" decoding="async" width="615" height="592" src="/assets/prova/wpp-juliana.webp"
+            alt="Conversa no WhatsApp: Juliana mostra o foguete de papelão que o filho escolheu montar">
+        </figure>
+      </div>
+
+      <button type="button" class="carrossel__seta carrossel__seta--prox" data-dir="1" aria-label="Próximo depoimento">›</button>
+
+      <div class="carrossel__pontos" id="carrossel-pontos"></div>
     </div>
   </div>
 </section>
@@ -927,13 +1040,13 @@ body.modal-aberto{overflow:hidden}
     </div>
 
     <div class="offer reveal" style="margin-top:64px">
+      <span class="offer__selo" aria-hidden="true">90% OFF</span>
       <span class="offer__label">OFERTA ESPECIAL DE LANÇAMENTO</span>
       <p class="offer__old">De <s>R$ 99,00</s> por apenas</p>
       <p class="offer__price">R$&nbsp;10,00</p>
       <p class="offer__save">Você economiza <b>R$ 89,00</b> — cerca de <b>90% de desconto</b> para garantir o guia completo.</p>
-      <a class="btn btn--green btn--block js-checkout" href="https://go.ironpayapp.com.br/9y9azrh8w7">
+      <a class="btn btn--green btn--destaque btn--block js-checkout" href="https://go.ironpayapp.com.br/9y9azrh8w7">
         QUERO ACESSAR O GUIA POR APENAS R$ 10
-        <span class="btn__sub"></span>
       </a>
       <p class="pay-row">
         <span>🔒 Pagamento seguro</span><span>💳 Cartão, Pix e boleto</span><span>⚡ Acesso imediato</span><span>↩️ 7 dias de garantia</span>
@@ -1143,6 +1256,102 @@ var TRACKING = (function(){
     p.forEach(function(v,k){ if(!u.searchParams.has(k)) u.searchParams.set(k,v); });
     a.href=u.toString();
   });
+})();
+
+/* ================= CARROSSEL DE DEPOIMENTOS =================
+   Rolagem nativa com scroll-snap: arrastar no celular ja funciona de graca.
+   As setas e os pontos so empurram o scroll. */
+(function(){
+  var trilho = document.getElementById('carrossel-trilho');
+  var pontos = document.getElementById('carrossel-pontos');
+  if (!trilho) return;
+
+  var itens = [].slice.call(trilho.children);
+  var setas = [].slice.call(document.querySelectorAll('.carrossel__seta'));
+  var totalPaginas = 1;
+
+  function maxScroll(){ return trilho.scrollWidth - trilho.clientWidth; }
+
+  function passoItem(){
+    if (itens.length < 2) return itens[0] ? itens[0].offsetWidth : trilho.clientWidth;
+    return itens[1].offsetLeft - itens[0].offsetLeft;
+  }
+
+  /* Navegacao por PAGINA, nao por item. No desktop cabem tres cartoes de uma
+     vez; com um ponto por item, os ultimos nunca seriam alcancaveis e as setas
+     travariam antes do fim. */
+  function porPagina(){
+    return Math.max(1, Math.round(trilho.clientWidth / passoItem()));
+  }
+  function larguraPagina(){ return porPagina() * passoItem(); }
+
+  function paginaAtual(){
+    return Math.min(totalPaginas - 1, Math.round(trilho.scrollLeft / larguraPagina()));
+  }
+
+  function irPara(p){
+    var alvo = Math.min(totalPaginas - 1, Math.max(0, p)) * larguraPagina();
+    trilho.scrollTo({ left: Math.min(maxScroll(), alvo), behavior: 'smooth' });
+  }
+
+  function montarPontos(){
+    var novo = Math.max(1, Math.ceil(itens.length / porPagina()));
+    if (novo === totalPaginas && pontos.children.length) return;
+    totalPaginas = novo;
+    pontos.innerHTML = '';
+    for (var i = 0; i < totalPaginas; i++) {
+      (function(idx){
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'carrossel__ponto';
+        b.setAttribute('aria-label', 'Ir para a página ' + (idx+1) + ' de ' + totalPaginas);
+        b.addEventListener('click', function(){ irPara(idx); });
+        pontos.appendChild(b);
+      })(i);
+    }
+    // Com tudo visivel de uma vez, os pontos nao servem para nada.
+    pontos.hidden = totalPaginas < 2;
+  }
+
+  setas.forEach(function(s){
+    s.addEventListener('click', function(){
+      irPara(paginaAtual() + Number(s.dataset.dir));
+    });
+  });
+
+  // Setas do teclado, para quem navega sem mouse.
+  trilho.addEventListener('keydown', function(e){
+    if (e.key === 'ArrowRight') { e.preventDefault(); irPara(paginaAtual() + 1); }
+    if (e.key === 'ArrowLeft')  { e.preventDefault(); irPara(paginaAtual() - 1); }
+  });
+
+  function sincronizar(){
+    montarPontos();
+    var p = paginaAtual();
+    [].slice.call(pontos.children).forEach(function(b, idx){
+      b.setAttribute('aria-current', idx === p ? 'true' : 'false');
+    });
+    /* Desabilita pelas pontas do SCROLL: e o unico teste que continua certo
+       quando a ultima pagina fica pela metade.
+       O inicio nao e zero — o trilho tem padding, entao o primeiro cartao
+       repousa em offsetLeft e a seta "anterior" nunca desabilitaria. */
+    var inicioReal = itens.length ? itens[0].offsetLeft : 0;
+    var noInicio = trilho.scrollLeft <= inicioReal + 1;
+    var noFim = trilho.scrollLeft >= maxScroll() - 1;
+    setas.forEach(function(s){
+      var dir = Number(s.dataset.dir);
+      s.disabled = (dir < 0 && noInicio) || (dir > 0 && noFim);
+    });
+  }
+
+  var agendado;
+  trilho.addEventListener('scroll', function(){
+    // O scroll dispara dezenas de vezes por arrasto; so interessa o estado final.
+    clearTimeout(agendado);
+    agendado = setTimeout(sincronizar, 90);
+  });
+  window.addEventListener('resize', sincronizar);
+  sincronizar();
 })();
 
 /* ================= VÍDEO =================
